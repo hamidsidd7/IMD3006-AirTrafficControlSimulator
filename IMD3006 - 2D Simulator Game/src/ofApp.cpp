@@ -1,8 +1,9 @@
 #include "ofApp.h"
-
+#include "ofxOpenCv.h"
+#include "Aircraft.h"
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+	
 }
 
 //--------------------------------------------------------------
@@ -12,6 +13,8 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	ofBackground(0);
+	ofDrawBitmapString("Welcome To our Game", 10, ofGetHeight() /2);
 
 }
 

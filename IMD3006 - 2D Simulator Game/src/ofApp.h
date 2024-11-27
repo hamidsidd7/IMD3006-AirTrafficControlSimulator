@@ -1,6 +1,8 @@
 #pragma once
-
+#include "Aircraft.h"
 #include "ofMain.h"
+
+
 
 class ofApp : public ofBaseApp{
 
@@ -8,6 +10,7 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+		Aircraft Aircraft;
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -22,19 +25,3 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 };
-
-class Aircraft {
-private:
-	float speed;
-	float altitude;
-	float fuelLevel;
-	int positionX, positionY;
-
-public:
-	Aircraft(float initSpeed, float initAltitude, float initFuel);
-	void takeoff();
-	void land();
-	void updatePosition();
-	bool checkCollision(const Aircraft& other);
-};
-
