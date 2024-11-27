@@ -10,6 +10,7 @@ private:
     string status = "NULL"; // "available", "occupied", "under maintenance"
 
 public:
+    Runway* next;
     Runway(int id);
     void setStatus(const string newStatus);
     string getStatus();

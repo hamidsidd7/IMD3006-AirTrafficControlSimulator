@@ -2,11 +2,12 @@
 #include "Aircraft.h"
 using namespace::std;
 
-Aircraft::Aircraft (float initSpeed, float initAltitude, float initFuel)
+Aircraft::Aircraft ()
 {
-    initSpeed = 0;
-    initAltitude = 0;
-    initFuel = 0;
+    float initSpeed = 0;
+    float initAltitude = 0;
+    float initFuel = 0;
+    
 }
 void Aircraft::takeoff()
 {

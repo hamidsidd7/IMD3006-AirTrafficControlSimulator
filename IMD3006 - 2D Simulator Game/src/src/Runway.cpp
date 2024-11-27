@@ -2,7 +2,7 @@
 
 Runway::Runway(int newID)
 {
-
+	next = NULL;
 }
 
 void Runway::setStatus(const string newStatus)

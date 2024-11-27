@@ -2,73 +2,64 @@
 #include "ofxOpenCv.h"
 #include "Aircraft.h"
 //--------------------------------------------------------------
-void ofApp::setup(){
-	
+void ofApp::setup()
+{
+    AircraftList = new Aircraft();
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
+void ofApp::update()
+{
 
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::draw()
+{
 	ofBackground(0);
 	ofDrawBitmapString("Welcome To our Game", 10, ofGetHeight() /2);
 
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
+void ofApp::keyPressed(int key)
+{
 
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key){
+void ofApp::keyReleased(int key)
+{
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
+void ofApp::mousePressed(int x, int y, int button)
+{
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
+void ofApp::addAircraft()
+{
+    //use linked lists to add new aircrafts
+}
+
+//--------------------------------------------------------------
+void ofApp::removeAircraft()
+{
+    //use linked lists to remove aircrafts
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
+void ofApp::handleCollisions() 
+{
+    //logic to handle collisions between planes
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
+void ofApp::manageRunways() 
+{
+   //logic to handle runways
 }

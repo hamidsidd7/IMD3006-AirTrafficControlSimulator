@@ -11,7 +11,10 @@ private:
 	
 
 public:
-	Aircraft(float initSpeed, float initAltitude, float initFuel);
+	
+	
+	Aircraft();
+	Aircraft* next = NULL;
 	void takeoff();
 	void land();
 	void updatePosition();
