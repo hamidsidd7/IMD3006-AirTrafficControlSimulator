@@ -22,3 +22,19 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 };
+
+class Aircraft {
+private:
+	float speed;
+	float altitude;
+	float fuelLevel;
+	int positionX, positionY;
+
+public:
+	Aircraft(float initSpeed, float initAltitude, float initFuel);
+	void takeoff();
+	void land();
+	void updatePosition();
+	bool checkCollision(const Aircraft& other);
+};
+
