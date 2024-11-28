@@ -14,4 +14,5 @@ int main( ){
 	ofRunApp(window, make_shared<ofApp>());
 	ofRunMainLoop();
 
+	cout << "Welcome To our Air Traffic Control 2D Simulator Game";
 }
