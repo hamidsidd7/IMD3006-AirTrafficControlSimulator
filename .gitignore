@@ -11,6 +11,8 @@ libs/openFrameworksCompiled/lib/*/*
 
 config.make
 
+*.dll
+
 # apothecary
 scripts/apothecary
 
