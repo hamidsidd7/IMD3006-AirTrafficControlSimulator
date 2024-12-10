@@ -2,7 +2,7 @@
 #include "Radar.h"
 void  Radar::setup()
 {
-	radarImg.load("radar");
+	radarImg.load("radar.png");
 }
 void  Radar::update()
 {

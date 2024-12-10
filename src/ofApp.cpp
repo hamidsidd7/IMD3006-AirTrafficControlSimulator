@@ -6,10 +6,12 @@ void ofApp::setup()
 {
     ofSetFrameRate(60);
     
-    
-    for (int i = 0; i < 5; i++)
+    runway.setup();
+    radar.setup();
+
+    for (int i = 0; i < 10; i++)
     {
-        radar.radarImg.load("radar.png");
+        //radar.radarImg.load("radar.png");
         
         Aircraft plane;
         plane.setup();
@@ -25,22 +27,43 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    for (auto& plane : Aircrafts)
+    auto currPlane = Aircrafts.begin();
+    while (currPlane != Aircrafts.end())
     {
-        plane.updatePosition();
+        currPlane->updatePosition();
+
+      
+        if (currPlane->position.y < ofGetWindowHeight() - 668 || currPlane->position.y > ofGetWindowHeight() - 150 ||
+            currPlane->position.x < (ofGetWindowWidth() / 2) - 100 || currPlane->position.x >(ofGetWindowWidth() / 2) + 100)
+        {
+            currPlane = Aircrafts.erase(currPlane); 
+        }
+        else
+        {
+            ++currPlane; 
+        }
     }
+        if (Aircrafts.size() < 10) {
+            Aircraft newPlane;
+            newPlane.setup();
+            Aircrafts.push_back(newPlane);
+        }
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	//ofBackground(157);
+	ofBackground(157);
 	ofDrawBitmapString("Welcome To our Game", 10, ofGetHeight() /2);
     radar.Draw();
+    ofPushMatrix();
+    runway.Draw();
+    ofPopMatrix();
 
-    for (const auto &plane : Aircrafts)
+    for (auto &plane : Aircrafts)
     {
-        plane.draw();
+        plane.Draw();
 
     }
 
@@ -88,3 +111,4 @@ void ofApp::manageRunways()
 {
    //logic to handle runways
 }
+

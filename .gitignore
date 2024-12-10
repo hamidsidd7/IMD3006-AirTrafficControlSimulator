@@ -1,183 +1,36 @@
-#########################
-# openFrameworks patterns
-#########################
 
-# build files
-openFrameworks.a
-openFrameworksDebug.a
-openFrameworksUniversal.a
-libs/openFrameworksCompiled/lib/*/*
-!libs/openFrameworksCompiled/lib/*/.gitkeep
-
+IMD3006-AirTrafficControlSimulator.vcxproj.user
+IMD3006-AirTrafficControlSimulator.vcxproj.filters
+IMD3006-AirTrafficControlSimulator.vcxproj
+IMD3006-AirTrafficControlSimulator.sln
+icon.rc
 config.make
-
-*.dll
-
-# apothecary
-scripts/apothecary
-
-# rule to avoid non-official addons going into git
-# see addons/.gitignore
-addons/*
-
-# rule to avoid non-official apps going into git
-# see apps/.gitignore
-apps/*
-
-# rule to ignore compiled / downloaded libs
-/libs/*
-!/libs/openFrameworks
-!/libs/openFrameworksCompiled
-
-# also, see examples/.gitignore
-
-#########################
-# general
-#########################
-
-[Bb]uild/
-[Oo]bj/
-*.o
-examples/**/[Dd]ebug*/
-examples/**/[Rr]elease*/
-examples/**/gcc-debug/
-examples/**/gcc-release/
-examples/**/addons.make
-examples/**/[Mm]akefile
-examples/**/config.make
-examples/**/.gitkeep
-tests/**/[Dd]ebug*/
-tests/**/[Rr]elease*/
-tests/**/gcc-debug/
-tests/**/gcc-release/
-*.mode*
-*.app/
-*.pyc
-.svn/
-*.log
-*.cpp.eep
-*.cpp.elf
-*.cpp.hex
-*.rc
-*.sln
-*.vcxproj
-*.filters
-*.user
-
-#########################
-# IDE
-#########################
-
-# VSCode
-*.code-workspace
-.vscode
-
-# XCode
-examples/**/*.entitlements
-examples/**/*.xcconfig
-examples/**/*.plist
-examples/**/*.yml
-tests/**/*.entitlements
-tests/**/*.xcconfig
-tests/**/*.plist
-tests/**/*.yml
-*.pbxuser
-*.perspective
-*.perspectivev3
-*.mode1v3
-*.mode2v3
-# XCode 4
-xcuserdata
-*.xcworkspace
-
-# Code::Blocks
-*.depend
-*.layout
-
-# Visual Studio
-*.sdf
-*.opensdf
-*.suo
-*.pdb
-*.ilk
-*.aps
-ipch/
-
-# Eclipse
-.metadata
-local.properties
-.externalToolBuilders
-
-# Android Studio
-.idea
-.gradle
-gradle
-gradlew
-gradlew.bat
-
-# QtCreator
-*.qbs.user
-*.pro.user
-*.pri
-
-#########################
-# operating system
-#########################
-
-# Linux
-*~
-# KDE
-.directory
-.AppleDouble
-
-
-
-# OSX
-.DS_Store
-*.swp
-*~.nib
-# Thumbnails
-._*
-examples/ios/**/mediaAssets
-
-# Windows
-# Windows image file caches
-Thumbs.db
-# Folder config file
-Desktop.ini
-
-# Android
-.csettings
-/libs/openFrameworksCompiled/project/android/paths.make
-
-# Android Studio
-*.iml
-
-#########################
-# miscellaneous
-#########################
-
-.mailmap
-/apps*/
-projectGenerator*/
-.cxx/
-
-examples/**/Makefile
-examples/**/config.make
-
-libs/openFrameworksCompiled/project/vs/.vs/
-scripts/templates/vs/.vs/
-**/.vs/
-libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj/xcshareddata
-scripts/templates/ios/bin
-libs/openFrameworksCompiled/project/tvOS/tvOS+OFLib.xcodeproj/xcshareddata
-scripts/osx/regressionTest
-examples/**/**/[Cc]onfig.make
-*.key
-*.pem
-
-# Simple_OF_Firmata_Test/icon.rc
-# Simple_OF_Firmata_Test/Simple_OF_Firmata_Test.sln
-# Simple_OF_Firmata_Test/Simple_OF_Firmata_Test.vcxproj
-# Simple_OF_Firmata_Test/Simple_OF_Firmata_Test.vcxproj.filters
-# Simple_OF_Firmata_Test.vcxproj.user
+addons.make
+bin/2DplaneGame_debug.exe
+bin/data/runway.png
+bin/fmod.dll
+bin/fmodL.dll
+bin/FreeImage.dll
+bin/IMD3006-AirTrafficControlSimulator_debug.exe
+bin/IMD3006-AirTrafficControlSimulator_debug.pdb
+bin/2DplaneGame_debug.exe
+.vs/IMD3006-AirTrafficControlSimulator/v17/Solution.VC.db-wal
+.vs/IMD3006-AirTrafficControlSimulator/v17/Solution.VC.db-shm
+.vs/IMD3006-AirTrafficControlSimulator/v17/Solution.VC.db
+.vs/IMD3006-AirTrafficControlSimulator/v17/ipch/AutoPCH/d1f0b34ae2880dc3/RUNWAY.ipch
+.vs/IMD3006-AirTrafficControlSimulator/v17/ipch/AutoPCH/c476fd319dadfb3b/OFAPP.ipch
+.vs/IMD3006-AirTrafficControlSimulator/v17/ipch/AutoPCH/928af31a0fe13467/OFAPP.ipch
+.vs/IMD3006-AirTrafficControlSimulator/v17/ipch/AutoPCH/8ff157afcd5e8b23/RADAR.ipch
+.vs/IMD3006-AirTrafficControlSimulator/v17/ipch/AutoPCH/8ce8b7e877ea49bd/AIRCRAFT.ipch
+.vs/IMD3006-AirTrafficControlSimulator/v17/ipch/AutoPCH/80751886e6c596ca/MAIN.ipch
+.vs/IMD3006-AirTrafficControlSimulator/v17/fileList.bin
+.vs/IMD3006-AirTrafficControlSimulator/v17/Browse.VC.opendb
+.vs/IMD3006-AirTrafficControlSimulator/v17/Browse.VC.db-wal
+.vs/IMD3006-AirTrafficControlSimulator/v17/Browse.VC.db-shm
+.vs/IMD3006-AirTrafficControlSimulator/v17/Browse.VC.db
+.vs/IMD3006-AirTrafficControlSimulator/v17/.suo
+.vs/IMD3006-AirTrafficControlSimulator/FileContentIndex/d4d42f10-e46b-4482-8e68-816c2c5131a6.vsidx
+.vs/IMD3006-AirTrafficControlSimulator/FileContentIndex/aebfadfb-48ab-45ea-8c34-b3a435e36b06.vsidx
+.vs/IMD3006-AirTrafficControlSimulator/FileContentIndex/96970032-7bbc-4dcf-b5f6-134769a4fa6d.vsidx
+.vs/IMD3006-AirTrafficControlSimulator/FileContentIndex/66f8b2a2-8bb8-492a-b185-ced5f9aead51.vsidx
+.vs/IMD3006-AirTrafficControlSimulator/FileContentIndex/597c198d-bf4f-4e1f-9c8e-e3839fd5b177.vsidx

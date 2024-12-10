@@ -12,16 +12,19 @@ public:
 	float speed;
 	float altitude;
 	float fuelLevel;
+	float directionAngle;
 	string planeID;
-	
+
+	enum AircraftState { IDLE, FLYING, LANDING };
+	AircraftState state;
 	Aircraft* next = NULL;
 	ofImage aircraftImg;
 	void setup();
-	void takeoff();
-	void land();
+	//void takeoff();
+	//void land();
 	void setPos(int X, int Y);
 	void updatePosition();
 	bool checkCollision(const Aircraft& other);
-	void draw() const;
+	void Draw();
 };
 
