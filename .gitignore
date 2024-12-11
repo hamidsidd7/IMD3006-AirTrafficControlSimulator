@@ -5,7 +5,7 @@ IMD3006-AirTrafficControlSimulator.vcxproj
 IMD3006-AirTrafficControlSimulator.sln
 icon.rc
 config.make
-addons.make
+obj/
 bin/2DplaneGame_debug.exe
 bin/data/runway.png
 bin/fmod.dll
@@ -14,6 +14,7 @@ bin/FreeImage.dll
 bin/IMD3006-AirTrafficControlSimulator_debug.exe
 bin/IMD3006-AirTrafficControlSimulator_debug.pdb
 bin/2DplaneGame_debug.exe
+.vs/
 .vs/IMD3006-AirTrafficControlSimulator/v17/Solution.VC.db-wal
 .vs/IMD3006-AirTrafficControlSimulator/v17/Solution.VC.db-shm
 .vs/IMD3006-AirTrafficControlSimulator/v17/Solution.VC.db
