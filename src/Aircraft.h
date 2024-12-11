@@ -14,14 +14,15 @@ public:
 	float fuelLevel;
 	float directionAngle;
 	string planeID;
-
+	
+	bool landing;
+	bool deniedLanding;
 	
 	AircraftState state;
-	Aircraft* next = NULL;
 	ofImage aircraftImg;
 	void setup();
-	//void takeoff();
-	//void land();
+	void takeoff();
+	void land();
 	void setPos(int X, int Y);
 	void updatePosition();
 	bool checkCollision(const Aircraft& other);

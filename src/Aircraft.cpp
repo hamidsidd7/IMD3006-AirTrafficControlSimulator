@@ -4,42 +4,53 @@ using namespace::std;
 
 void Aircraft::setup ()
 {
-    speed = ofRandom(0.2,0.4);
+    state = FLYING;
     float initSpeed = 0;
     float initAltitude = 0;
     float initFuel = 0;
     aircraftImg.load("plane.png");
-    planeID = "Null";
+    planeID = "Aircraft " + to_string((int)ofRandom(100,999));
     position.set(ofRandom(ofGetWindowWidth() / 2 + 100, ofGetWindowWidth() / 2 - 100),
         ofGetWindowHeight() / 2 - 200);
     directionAngle = ofRandom(0, 360) * DEG_TO_RAD;
+
+    landing = false;
+    deniedLanding = false;
 }
-/*void Aircraft::takeoff()
+void Aircraft::takeoff()
 {
     state = FLYING;
+    speed = 0.5;
 }
 
 void Aircraft::land()
 {
-   
-    state = LANDING;
-    speed = 0;
-}*/
+    landing = true;
+    //speed = 0;
+}
 
 void Aircraft::updatePosition() {
-   // if (state == FLYING) 
-   // {
-    
-        position.x += speed * cos(directionAngle);
-        position.y += speed * sin(directionAngle);
+    switch (state)
+    {
+    case FLYING:
+        speed = ofRandom(0.2, 0.4); // Random speed when flying
+        break;
+    case TAKEOFF:
+        // No need to overwrite speed if already set in takeoff
+        break;
+    case LANDING:
+        speed = 0.03;
+        break;
+    default:
+        break;
+    }
+    position.x += speed * cos(directionAngle);
+    position.y += speed * sin(directionAngle);
         
         
 
         float distanceFromCenter = ofDist(position.x, position.y, ofGetWindowWidth()/2, ofGetWindowHeight()/2);
 
-      
-
-   // }
 }
 
 bool Aircraft::checkCollision(const Aircraft& other) 
@@ -71,4 +82,6 @@ void Aircraft::Draw() {
     aircraftImg.draw(-aircraftImg.getWidth() / 2, -aircraftImg.getHeight() / 2);
 
     ofPopMatrix();
+
+
 }

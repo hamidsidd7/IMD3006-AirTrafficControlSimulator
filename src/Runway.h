@@ -10,9 +10,10 @@ public:
     int id;
     string status; // "available", "occupied", "under maintenance"
     ofImage runwayImg;
-    ofImage landImg;
 
-   // Runway* next;
+    ofRectangle landingZone; 
+
+  
     void setup();
     void setStatus(const string newStatus);
     string getStatus();

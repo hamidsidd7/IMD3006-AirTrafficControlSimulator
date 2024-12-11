@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "Radar.h"
 #include "Model.h"
+#include "ofxImGui.h"
 
 
 
@@ -22,6 +23,7 @@ class ofApp : public ofBaseApp{
 		Radar radar;
 		Model model;
 
+		ofxImGui::Gui gui;
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mousePressed(int x, int y, int button);
