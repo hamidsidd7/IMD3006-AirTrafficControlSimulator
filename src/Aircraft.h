@@ -15,7 +15,7 @@ public:
 	float directionAngle;
 	string planeID;
 
-	enum AircraftState { IDLE, FLYING, LANDING };
+	
 	AircraftState state;
 	Aircraft* next = NULL;
 	ofImage aircraftImg;

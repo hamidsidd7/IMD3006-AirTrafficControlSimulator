@@ -12,7 +12,7 @@ void Aircraft::setup ()
     planeID = "Null";
     position.set(ofRandom(ofGetWindowWidth() / 2 + 100, ofGetWindowWidth() / 2 - 100),
         ofGetWindowHeight() / 2 - 200);
-    directionAngle = ofRandom(0, 360);
+    directionAngle = ofRandom(0, 360) * DEG_TO_RAD;
 }
 /*void Aircraft::takeoff()
 {
@@ -21,6 +21,7 @@ void Aircraft::setup ()
 
 void Aircraft::land()
 {
+   
     state = LANDING;
     speed = 0;
 }*/
@@ -28,13 +29,15 @@ void Aircraft::land()
 void Aircraft::updatePosition() {
    // if (state == FLYING) 
    // {
-    if (position.y < ofGetWindowHeight() - 568 || position.y >  ofGetWindowHeight() - 200 && position.x < (ofGetWindowWidth() / 2)-100, position.x >(ofGetWindowWidth() / 2) + 100)
+    
         position.x += speed * cos(directionAngle);
         position.y += speed * sin(directionAngle);
+        
+        
 
         float distanceFromCenter = ofDist(position.x, position.y, ofGetWindowWidth()/2, ofGetWindowHeight()/2);
 
-       
+      
 
    // }
 }
@@ -51,22 +54,21 @@ void Aircraft::setPos(int X, int Y)
     position.y = Y;
 }
 
-void Aircraft::Draw()
-{
-    // Store the current matrix state
+void Aircraft::Draw() {
+
     ofPushMatrix();
 
-    // Translate to the aircraft's position
+
     ofTranslate(position.x, position.y);
 
-    // Rotate around the aircraft's center (no offset for now)
-    ofRotate(directionAngle);
+
+    ofRotateRad(directionAngle + PI / 2);
+
 
     ofScale(0.03, 0.03);
 
-    // Draw the aircraft image at (0, 0), which is the translated position
+
     aircraftImg.draw(-aircraftImg.getWidth() / 2, -aircraftImg.getHeight() / 2);
 
-    // Restore the matrix state
     ofPopMatrix();
 }

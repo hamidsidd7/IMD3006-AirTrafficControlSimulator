@@ -5,10 +5,12 @@
 void ofApp::setup()
 {
     ofSetFrameRate(60);
-    
+    //ofToggleFullscreen();
     runway.setup();
     radar.setup();
 
+    runwayPosX = runway.runwayImg.getWidth() / 2;
+    runwayPosY = runway.runwayImg.getHeight() / 2;
     for (int i = 0; i < 10; i++)
     {
         //radar.radarImg.load("radar.png");
@@ -19,6 +21,11 @@ void ofApp::setup()
         plane.setPos(ofRandom(100, 900), ofRandom(100, 700));
         
         Aircrafts.push_back(plane);
+
+       if (plane.y < runwayPosY + 150 || plane.x < runwayPosX + 150)
+        {
+            plane.state =  LANDING;
+        }
         
     }
     
@@ -27,14 +34,16 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    
     auto currPlane = Aircrafts.begin();
     while (currPlane != Aircrafts.end())
     {
+       
         currPlane->updatePosition();
 
       
         if (currPlane->position.y < ofGetWindowHeight() - 668 || currPlane->position.y > ofGetWindowHeight() - 150 ||
-            currPlane->position.x < (ofGetWindowWidth() / 2) - 100 || currPlane->position.x >(ofGetWindowWidth() / 2) + 100)
+            currPlane->position.x < (ofGetWindowWidth() / 2) - 200 || currPlane->position.x >(ofGetWindowWidth() / 2) + 170)
         {
             currPlane = Aircrafts.erase(currPlane); 
         }
@@ -63,6 +72,8 @@ void ofApp::draw()
 
     for (auto &plane : Aircrafts)
     {
+        int Speed = (int)plane.speed;
+        cout << Speed;
         plane.Draw();
 
     }
