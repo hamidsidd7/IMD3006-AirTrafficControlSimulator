@@ -13,10 +13,11 @@ public:
 
     ofRectangle landingZone; 
 
-  
+    int  runwaysFree;
     void setup();
     void setStatus(const string newStatus);
     string getStatus();
     bool isAvailable();
     void Draw();
+    int getRunwaysFree();
 };

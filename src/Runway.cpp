@@ -17,10 +17,15 @@ void Runway::setup() {
     float zoneY = ofGetWindowHeight() / 2 - 20;
 
     
-
+    
     landingZone.set(zoneX, zoneY, zoneWidth, zoneHeight);
+    runwaysFree = 6;
 }
 
+int Runway :: getRunwaysFree()
+{
+    return runwaysFree; 
+}
 
 void Runway::setStatus(const string newStatus)
 {

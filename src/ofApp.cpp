@@ -36,13 +36,16 @@ void ofApp::update()
     {
         currPlane->updatePosition();
 
-        if (runway.landingZone.inside(currPlane->position)) {
-            if (currPlane->state != TAKEOFF) {
+        if (runway.landingZone.inside(currPlane->position))
+        {
+            if (currPlane->state != TAKEOFF) 
+            {
                 currPlane->state = LANDING;
             }
         }
 
-        else if (!runway.landingZone.inside(currPlane->position)) {
+        else if (!runway.landingZone.inside(currPlane->position)) 
+        {
             currPlane->state = FLYING;
         }
 
@@ -59,7 +62,8 @@ void ofApp::update()
         }
     }
 
-    if (Aircrafts.size() < 10) {
+    if (Aircrafts.size() < 10)
+    {
         Aircraft newPlane;
         newPlane.setup();
 
@@ -91,33 +95,33 @@ void ofApp::draw() {
     ImGui::SetNextWindowSize(ofVec2f(200, 500), ImGuiCond_Once);
     ImGui::Begin("Plane Management");
 
-    
+    ImGui::Text("Free Runways: %d", runway.getRunwaysFree());
 
-    for (auto& plane : Aircrafts) {
-        if (runway.landingZone.inside(plane.position) && plane.state == LANDING && !plane.landing) 
+    for (auto& plane : Aircrafts) 
+    {
+        if (runway.landingZone.inside(plane.position) && plane.state == LANDING && !plane.landing)
         {
-           if (!plane.deniedLanding)
-              { 
-            ImGui::Text(plane.planeID.c_str());
-               
+            if (!plane.deniedLanding) 
+            {
+                ImGui::Text(plane.planeID.c_str());
                 ImGui::Text("Plane is requesting to land.");
-
-              
-                  if (ImGui::Button("Approve Landing"))
-                  {
-                      plane.land();
-                  }
-              
-
+                while (runway.runwaysFree > 0)
+                {
+                    if (ImGui::Button("Approve Landing"))
+                    {
+                        plane.land();
+                        runway.runwaysFree--;
+                    }
+                }
                 
+
                 if (ImGui::Button("Deny Landing")) 
                 {
-                    plane.directionAngle += PI; 
+                    plane.directionAngle += PI;  // Reverse direction
                     plane.state = FLYING;
                     plane.deniedLanding = true;
-                }  
-           
-           }
+                }
+            }
         }
         
         else if (runway.landingZone.inside(plane.position) && plane.state == TAKEOFF && !plane.landing) 
@@ -146,8 +150,10 @@ void ofApp::draw() {
 
     ImGui::End();  
 
-    for (auto& plane : Aircrafts) {
-        if (plane.state == LANDING && !plane.landing) {
+    for (auto& plane : Aircrafts) 
+    {
+        if (plane.state == LANDING && !plane.landing) 
+        {
             if (plane.deniedLanding == false)
             {
                 ofSetColor(255, 255, 0);
@@ -155,7 +161,8 @@ void ofApp::draw() {
                 ofSetColor(255);
             }
         }
-        else if (plane.state == TAKEOFF) {
+        else if (plane.state == TAKEOFF) 
+        {
             ofSetColor(255, 255, 0);
             ofDrawBitmapString(plane.planeID + " is requesting to take off", plane.position.x, plane.position.y - 20);
             ofSetColor(255);
