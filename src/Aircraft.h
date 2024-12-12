@@ -1,6 +1,7 @@
 #pragma once
 #include "gameObject.h"
 #include "ofMain.h"
+#include "Runway.h"
 using namespace::std;
 
 
@@ -17,6 +18,9 @@ public:
 	
 	bool landing;
 	bool deniedLanding;
+	bool deniedTakeOff;
+
+	Runway runway;
 	
 	AircraftState state;
 	ofImage aircraftImg;

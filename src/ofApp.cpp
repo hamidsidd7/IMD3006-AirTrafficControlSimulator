@@ -10,22 +10,42 @@ void ofApp::setup()
     runway.setup();
     radar.setup();
 
+
     runwayPosX = runway.runwayImg.getWidth() / 2;
     runwayPosY = runway.runwayImg.getHeight() / 2;
     for (int i = 0; i < 10; i++)
     {
         //radar.radarImg.load("radar.png");
-        
+
         Aircraft plane;
         plane.setup();
         //plane.setPos(ofRandom(100, 900), ofRandom(600, 1000));
-        if (runway.landingZone.inside(plane.position)) {
+        if (runway.landingZone.inside(plane.position) && plane.state != TAKENOFF) 
+        {
             plane.state = TAKEOFF;
         }
         Aircrafts.push_back(plane);
-        
+
     }
+
     
+        if (runway.getRunwaysFree() < 6)
+        {
+
+        
+        Aircraft plane;
+        plane.setup();
+
+
+        int x = ofRandom(runway.landingZone.getX(), runway.landingZone.getX() + runway.landingZone.getWidth());
+        int y = ofRandom(runway.landingZone.getY(), runway.landingZone.getY() + runway.landingZone.getHeight());
+        plane.position.set(x, y);
+
+        plane.state = FLYING;
+        Aircrafts.push_back(plane);
+        
+       
+        }
 }
 
 //--------------------------------------------------------------
@@ -38,27 +58,43 @@ void ofApp::update()
 
         if (runway.landingZone.inside(currPlane->position))
         {
-            if (currPlane->state != TAKEOFF) 
+            if (currPlane->state != TAKEOFF && currPlane->state != TAKENOFF)
             {
                 currPlane->state = LANDING;
             }
         }
-
-        else if (!runway.landingZone.inside(currPlane->position)) 
+        else if (!runway.landingZone.inside(currPlane->position))
         {
             currPlane->state = FLYING;
         }
 
-        // Check if the plane is out of bounds
-        if (currPlane->position.y < ofGetWindowHeight() - 668 || currPlane->position.y > ofGetWindowHeight() - 150 ||
-            currPlane->position.x < (ofGetWindowWidth() / 2) - 200 || currPlane->position.x >(ofGetWindowWidth() / 2) + 170)
+        // Check if the plane is out of bounds, but only erase if it's in FLYING or LANDING state
+        if ((currPlane->position.y < ofGetWindowHeight() - 668 || currPlane->position.y > ofGetWindowHeight() - 150 ||
+            currPlane->position.x < (ofGetWindowWidth() / 2) - 200 || currPlane->position.x >(ofGetWindowWidth() / 2) + 170) &&
+            currPlane->state != TAKEOFF)
         {
-            
-            currPlane = Aircrafts.erase(currPlane); 
+            currPlane = Aircrafts.erase(currPlane);
         }
         else
         {
-            ++currPlane; 
+            ++currPlane;
+        }
+    }
+    
+    auto tOffcurrPlane = takeOffAircrafts.begin();
+    while (tOffcurrPlane != takeOffAircrafts.end())
+    {
+        tOffcurrPlane->updatePosition();
+
+        if (tOffcurrPlane->position.x <= runway.landingZone.getX() ||
+            tOffcurrPlane->position.x >= runway.landingZone.getX() + runway.landingZone.getWidth() && tOffcurrPlane->deniedTakeOff == true)
+        {
+            tOffcurrPlane->directionAngle += PI; // Bounce horizontally
+        }
+        if (tOffcurrPlane->position.y <= runway.landingZone.getY() ||
+            tOffcurrPlane->position.y >= runway.landingZone.getY() + runway.landingZone.getHeight())
+        {
+            tOffcurrPlane->directionAngle += PI; // Bounce vertically
         }
     }
 
@@ -66,12 +102,18 @@ void ofApp::update()
     {
         Aircraft newPlane;
         newPlane.setup();
-
-       
-
-
         Aircrafts.push_back(newPlane);
+        
+        if (runway.getRunwaysFree() <= 5 && runway.getRunwaysFree() !=6 && runway.getRunwaysFree() > 0)
+        {
+            addAircraft();
+            
+        }
     }
+        
+    
+    
+
 }
 
 
@@ -89,71 +131,78 @@ void ofApp::draw() {
     ofDrawRectangle(runway.landingZone);
     ofSetColor(255);
 
-    gui.begin();  
+    gui.begin();
 
-   
+
     ImGui::SetNextWindowSize(ofVec2f(200, 500), ImGuiCond_Once);
     ImGui::Begin("Plane Management");
-
     ImGui::Text("Free Runways: %d", runway.getRunwaysFree());
 
-    for (auto& plane : Aircrafts) 
-    {
+
+    for (auto& plane : Aircrafts) {
         if (runway.landingZone.inside(plane.position) && plane.state == LANDING && !plane.landing)
         {
-            if (!plane.deniedLanding) 
+            if (!plane.deniedLanding)
             {
                 ImGui::Text(plane.planeID.c_str());
+
                 ImGui::Text("Plane is requesting to land.");
-                while (runway.runwaysFree > 0)
+
+                if (runway.getRunwaysFree())
                 {
                     if (ImGui::Button("Approve Landing"))
                     {
                         plane.land();
                         runway.runwaysFree--;
                     }
-                }
-                
 
-                if (ImGui::Button("Deny Landing")) 
+                }
+
+
+
+                if (ImGui::Button("Deny Landing"))
                 {
-                    plane.directionAngle += PI;  // Reverse direction
+                    plane.directionAngle += PI;
                     plane.state = FLYING;
                     plane.deniedLanding = true;
+
                 }
+
             }
         }
-        
-        else if (runway.landingZone.inside(plane.position) && plane.state == TAKEOFF && !plane.landing) 
+
+        else if (runway.landingZone.inside(plane.position) && plane.state == TAKEOFF && !plane.landing)
         {
-      
+
             ImGui::Text(plane.planeID.c_str());
-                
-                ImGui::Text("Plane is requesting takeoff.");
 
-                
-                if (ImGui::Button("Approve Takeoff")) 
-                {
-                    plane.takeoff();
-                }
+            ImGui::Text("Plane is requesting takeoff.");
 
-            
-                if (ImGui::Button("Deny Takeoff"))
-                {
-                    plane.directionAngle += PI; // Reverse direction
-                    plane.speed = 0.01;
-                }
+
+            if (ImGui::Button("Approve Takeoff"))
+            {
+                plane.takeoff();
+               
+                runway.runwaysFree++;
+            }
+
+
+            if (ImGui::Button("Deny Takeoff"))
+            {
+                if (runway.landingZone.width)
+                plane.directionAngle += PI; // Reverse direction
+                plane.speed = 0.01;
+                plane.deniedTakeOff = true;
+            }
         }
-        
-        
+
+
     }
 
-    ImGui::End();  
+    ImGui::End();
 
-    for (auto& plane : Aircrafts) 
-    {
-        if (plane.state == LANDING && !plane.landing) 
-        {
+    for (auto& plane : Aircrafts) {
+        if (plane.state == LANDING && !plane.landing) {
             if (plane.deniedLanding == false)
             {
                 ofSetColor(255, 255, 0);
@@ -161,27 +210,26 @@ void ofApp::draw() {
                 ofSetColor(255);
             }
         }
-        else if (plane.state == TAKEOFF) 
-        {
+        else if (plane.state == TAKEOFF) {
             ofSetColor(255, 255, 0);
             ofDrawBitmapString(plane.planeID + " is requesting to take off", plane.position.x, plane.position.y - 20);
             ofSetColor(255);
         }
 
         // Draw the plane if it's not landed
-        if (!plane.landing) 
+        if (!plane.landing)
         {
             plane.Draw();
         }
     }
 
-    gui.end();  
+    gui.end();
 }
 
 
-        
 
-    
+
+
 
 
 //--------------------------------------------------------------
@@ -202,10 +250,20 @@ void ofApp::mousePressed(int x, int y, int button)
 
 }
 
-//--------------------------------------------------------------
-void ofApp::addAircraft()
-{
-    //use linked lists to add new aircrafts
+void ofApp::addAircraft() {
+    Aircraft newPlane;
+    newPlane.setup();
+
+    // Position the plane within the landing zone, ensuring it's ready for takeoff
+    int x = ofRandom(runway.landingZone.getX(), runway.landingZone.getX() + runway.landingZone.getWidth());
+    int y = ofRandom(runway.landingZone.getY(), runway.landingZone.getY() + runway.landingZone.getHeight());
+    newPlane.position.set(x, y);
+    newPlane.updatePosition();
+    // Set the plane's state to TAKEOFF
+    newPlane.state = TAKEOFF;
+
+    // Add the plane to the list
+    Aircrafts.push_back(newPlane);
 }
 
 //--------------------------------------------------------------
@@ -216,14 +274,13 @@ void ofApp::removeAircraft()
 }
 
 //--------------------------------------------------------------
-void ofApp::handleCollisions() 
+void ofApp::handleCollisions()
 {
     //logic to handle collisions between planes
 }
 
 //--------------------------------------------------------------
-void ofApp::manageRunways() 
+void ofApp::manageRunways()
 {
-   //logic to handle runways
+    //logic to handle runways
 }
-

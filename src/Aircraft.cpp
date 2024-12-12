@@ -16,17 +16,21 @@ void Aircraft::setup ()
 
     landing = false;
     deniedLanding = false;
+    deniedTakeOff = false;
+    runway.setup();
 }
 void Aircraft::takeoff()
 {
-    state = FLYING;
-    speed = 0.5;
+    deniedTakeOff = false;
+    state = TAKENOFF;
+    runway.runwaysFree--;
 }
 
 void Aircraft::land()
 {
     landing = true;
-    //speed = 0;
+    state = LANDING;
+    
 }
 
 void Aircraft::updatePosition() {
@@ -36,10 +40,13 @@ void Aircraft::updatePosition() {
         speed = ofRandom(0.2, 0.4); // Random speed when flying
         break;
     case TAKEOFF:
-        // No need to overwrite speed if already set in takeoff
+        speed = 0.01;
         break;
     case LANDING:
         speed = 0.03;
+        break;
+    case TAKENOFF:
+        speed = 1;
         break;
     default:
         break;
