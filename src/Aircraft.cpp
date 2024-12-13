@@ -14,11 +14,17 @@ void Aircraft::setup ()
         ofGetWindowHeight() / 2 - 200);
     directionAngle = ofRandom(0, 360) * DEG_TO_RAD;
 
+    altitude = ofRandom(500, 10000); // Random altitude between 500 and 10,000 feet
+    fuelLevel = ofRandom(50, 100);  // Random fuel level
+
     landing = false;
     deniedLanding = false;
     deniedTakeOff = false;
     runway.setup();
 }
+
+
+
 void Aircraft::takeoff()
 {
     deniedTakeOff = false;
@@ -33,31 +39,61 @@ void Aircraft::land()
     
 }
 
+//void Aircraft::updatePosition() {
+//    switch (state)
+//    {
+//    case FLYING:
+//        speed = ofRandom(0.2, 0.4); // Random speed when flying
+//        break;
+//    case TAKEOFF:
+//        speed = 0.01;
+//        break;
+//    case LANDING:
+//        speed = 0.03;
+//        break;
+//    case TAKENOFF:
+//        speed = 1;
+//        break;
+//    default:
+//        break;
+//    }
+//    position.x += speed * cos(directionAngle);
+//    position.y += speed * sin(directionAngle);
+//        
+//        
+//
+//        float distanceFromCenter = ofDist(position.x, position.y, ofGetWindowWidth()/2, ofGetWindowHeight()/2);
+//
+//}
+
 void Aircraft::updatePosition() {
-    switch (state)
-    {
+    switch (state) {
     case FLYING:
-        speed = ofRandom(0.2, 0.4); // Random speed when flying
+        speed = ofRandom(0.2, 0.4); // Random speed while flying
         break;
     case TAKEOFF:
-        speed = 0.01;
+        speed = 0.3;
+        altitude += ofRandom(10, 50); // Gradually increase altitude
         break;
     case LANDING:
-        speed = 0.03;
+        speed = 0.2;
+        altitude -= ofRandom(10, 50); // Gradually decrease altitude
+        if (altitude <= 0) {
+            altitude = 0; // Ensure altitude does not go below zero
+            landing = true;
+            state = IDLE; // After landing, set the plane to IDLE
+        }
         break;
     case TAKENOFF:
-        speed = 1;
+        speed = 1.0;
         break;
     default:
         break;
     }
+
+    // Update position
     position.x += speed * cos(directionAngle);
     position.y += speed * sin(directionAngle);
-        
-        
-
-        float distanceFromCenter = ofDist(position.x, position.y, ofGetWindowWidth()/2, ofGetWindowHeight()/2);
-
 }
 
 bool Aircraft::checkCollision(const Aircraft& other) 

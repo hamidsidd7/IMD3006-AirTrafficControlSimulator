@@ -146,6 +146,8 @@ void ofApp::draw() {
             {
                 ImGui::Text(plane.planeID.c_str());
 
+                ImGui::Text("Altitude: %.1f feet", plane.altitude); // Display altitude
+
                 ImGui::Text("Plane is requesting to land.");
 
                 if (runway.getRunwaysFree())
@@ -283,4 +285,13 @@ void ofApp::handleCollisions()
 void ofApp::manageRunways()
 {
     //logic to handle runways
+
+    for (auto& plane : Aircrafts) {
+        if (plane.state == LANDING && plane.altitude <= 100) {
+            if (runway.isAvailable()) {
+                runway.setStatus("occupied");
+                plane.land();
+            }
+        }
+    }
 }
