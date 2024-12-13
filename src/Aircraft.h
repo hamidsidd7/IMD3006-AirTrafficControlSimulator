@@ -19,6 +19,7 @@ public:
 	bool landing;
 	bool deniedLanding;
 	bool deniedTakeOff;
+	bool diverted;
 
 	Runway runway;
 	
