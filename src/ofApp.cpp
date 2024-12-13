@@ -66,18 +66,6 @@ void ofApp::update()
         {
             currPlane->state = FLYING;
         }
-
-        
-        if ((currPlane->position.y < ofGetWindowHeight() - 668 || currPlane->position.y > ofGetWindowHeight() - 150 ||
-            currPlane->position.x < (ofGetWindowWidth() / 2) - 200 || currPlane->position.x >(ofGetWindowWidth() / 2) + 170) &&
-            currPlane->state == FLYING)
-        {
-            currPlane = Aircrafts.erase(currPlane);
-        }
-        else
-        {
-            ++currPlane;
-        }
     }
    
 
@@ -200,8 +188,11 @@ void ofApp::draw() {
             if (ImGui::Button("Approve Takeoff"))
             {
                 plane.takeoff();
-               
-                runway.runwaysFree++;
+                while (runway.runwaysFree < 6)
+                {
+                    runway.runwaysFree++;
+                }
+                ;
             }
 
 
