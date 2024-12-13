@@ -21,6 +21,7 @@ void Aircraft::setup ()
     deniedLanding = false;
     deniedTakeOff = false;
     runway.setup();
+    diverted = false;
 }
 
 
@@ -72,16 +73,14 @@ void Aircraft::updatePosition() {
         speed = ofRandom(0.2, 0.4); // Random speed while flying
         break;
     case TAKEOFF:
-        speed = 0.3;
+        speed = 0.03;
         altitude += ofRandom(10, 50); // Gradually increase altitude
         break;
     case LANDING:
-        speed = 0.2;
+        speed = 0.03;
         altitude -= ofRandom(10, 50); // Gradually decrease altitude
         if (altitude <= 0) {
             altitude = 0; // Ensure altitude does not go below zero
-            landing = true;
-            state = IDLE; // After landing, set the plane to IDLE
         }
         break;
     case TAKENOFF:
@@ -98,8 +97,14 @@ void Aircraft::updatePosition() {
 
 bool Aircraft::checkCollision(const Aircraft& other) 
 {
-    float distance = position.distance(other.position); 
-    return distance < 20; 
+    float horizontalDistance = position.distance(other.position);
+    float altitudeDifference = abs(altitude - other.altitude);
+
+    
+    float proximityThreshold = 80.0f;
+    float altitudeThreshold = 300.0f;
+
+    return horizontalDistance < proximityThreshold && altitudeDifference < altitudeThreshold;
 }
 
 void Aircraft::setPos(int X, int Y)

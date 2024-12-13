@@ -16,10 +16,9 @@ void ofApp::setup()
     for (int i = 0; i < 10; i++)
     {
         //radar.radarImg.load("radar.png");
-
         Aircraft plane;
         plane.setup();
-        //plane.setPos(ofRandom(100, 900), ofRandom(600, 1000));
+        plane.position.set(ofRandom(100, 900), ofRandom(1000, 1200));
         if (runway.landingZone.inside(plane.position) && plane.state != TAKENOFF) 
         {
             plane.state = TAKEOFF;
@@ -68,10 +67,10 @@ void ofApp::update()
             currPlane->state = FLYING;
         }
 
-        // Check if the plane is out of bounds, but only erase if it's in FLYING or LANDING state
+        
         if ((currPlane->position.y < ofGetWindowHeight() - 668 || currPlane->position.y > ofGetWindowHeight() - 150 ||
             currPlane->position.x < (ofGetWindowWidth() / 2) - 200 || currPlane->position.x >(ofGetWindowWidth() / 2) + 170) &&
-            currPlane->state != TAKEOFF)
+            currPlane->state == FLYING)
         {
             currPlane = Aircrafts.erase(currPlane);
         }
@@ -80,23 +79,7 @@ void ofApp::update()
             ++currPlane;
         }
     }
-    
-    auto tOffcurrPlane = takeOffAircrafts.begin();
-    while (tOffcurrPlane != takeOffAircrafts.end())
-    {
-        tOffcurrPlane->updatePosition();
-
-        if (tOffcurrPlane->position.x <= runway.landingZone.getX() ||
-            tOffcurrPlane->position.x >= runway.landingZone.getX() + runway.landingZone.getWidth() && tOffcurrPlane->deniedTakeOff == true)
-        {
-            tOffcurrPlane->directionAngle += PI; // Bounce horizontally
-        }
-        if (tOffcurrPlane->position.y <= runway.landingZone.getY() ||
-            tOffcurrPlane->position.y >= runway.landingZone.getY() + runway.landingZone.getHeight())
-        {
-            tOffcurrPlane->directionAngle += PI; // Bounce vertically
-        }
-    }
+   
 
     if (Aircrafts.size() < 10)
     {
@@ -104,14 +87,14 @@ void ofApp::update()
         newPlane.setup();
         Aircrafts.push_back(newPlane);
         
-        if (runway.getRunwaysFree() <= 5 && runway.getRunwaysFree() !=6 && runway.getRunwaysFree() > 0)
+        if (runway.getRunwaysFree() < 6 && runway.getRunwaysFree() > 0)
         {
             addAircraft();
             
         }
     }
         
-    
+ 
     
 
 }
@@ -119,6 +102,8 @@ void ofApp::update()
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+
+
     ofBackground(157);
     ofDrawBitmapString("Welcome To our Game", 10, ofGetHeight() / 2);
     radar.Draw();
@@ -132,21 +117,52 @@ void ofApp::draw() {
     ofSetColor(255);
 
     gui.begin();
+    ImGui::SetNextWindowPos(ofVec2f(ofGetWindowWidth()-200, ofGetWindowHeight()-500), ImGuiCond_Once);
+    ImGui::Begin(" Collision Emergency Handling");
 
+    for (int i = 0; i < Aircrafts.size(); ++i)
+    {
+        for (int j = i + 1; j < Aircrafts.size(); ++j)
+        {
+            if (Aircrafts[i].diverted == false && Aircrafts[j].diverted == false)
+            {
+                if (Aircrafts[i].checkCollision(Aircrafts[j]))
+                {
+                    string planeInfo = Aircrafts[i].planeID + " & " + Aircrafts[j].planeID;
+                    ImGui::Text("%s", planeInfo.c_str());
+                
+                      if (ImGui::Button(("Divert " + planeInfo).c_str()))
+                      {
+                            Aircrafts[i].directionAngle += PI / 4;
+                            Aircrafts[j].directionAngle -= PI / 4;
+
+                            Aircrafts[i].diverted = true;
+                            Aircrafts[j].diverted = true;
+                      }
+                }
+                
+            }
+        }
+    }
+
+    ImGui::End();
 
     ImGui::SetNextWindowSize(ofVec2f(200, 500), ImGuiCond_Once);
     ImGui::Begin("Plane Management");
     ImGui::Text("Free Runways: %d", runway.getRunwaysFree());
+    
 
 
     for (auto& plane : Aircrafts) {
+        
+        ImGui::Text("Total Planes: %d", Aircrafts.size());
         if (runway.landingZone.inside(plane.position) && plane.state == LANDING && !plane.landing)
         {
             if (!plane.deniedLanding)
             {
                 ImGui::Text(plane.planeID.c_str());
 
-                ImGui::Text("Altitude: %.1f feet", plane.altitude); // Display altitude
+                ImGui::Text("Altitude: %.1f feet", plane.altitude); 
 
                 ImGui::Text("Plane is requesting to land.");
 
@@ -263,9 +279,30 @@ void ofApp::addAircraft() {
     newPlane.updatePosition();
     // Set the plane's state to TAKEOFF
     newPlane.state = TAKEOFF;
+    if (!runway.landingZone.inside(newPlane.position))
+    {
+        newPlane.state = FLYING;
+    }
 
     // Add the plane to the list
     Aircrafts.push_back(newPlane);
+
+    auto currPlane = Aircrafts.begin();
+    while (currPlane != Aircrafts.end())
+    {
+        
+        if ((currPlane->position.y < ofGetWindowHeight() - 668 || currPlane->position.y > ofGetWindowHeight() - 150 ||
+            currPlane->position.x < (ofGetWindowWidth() / 2) - 200 || currPlane->position.x >(ofGetWindowWidth() / 2) + 170) &&
+            currPlane->state == FLYING)
+        {
+            currPlane = Aircrafts.erase(currPlane);
+        }
+        else
+        {
+            ++currPlane;
+        }
+
+    }
 }
 
 //--------------------------------------------------------------
@@ -278,7 +315,22 @@ void ofApp::removeAircraft()
 //--------------------------------------------------------------
 void ofApp::handleCollisions()
 {
-    //logic to handle collisions between planes
+    for (size_t i = 0; i < Aircrafts.size(); ++i)
+    {
+        for (size_t j = i + 1; j < Aircrafts.size(); ++j)
+        {
+            if (Aircrafts[i].checkCollision(Aircrafts[j]))
+            {
+                // Handle the collision: log, change course, etc.
+                ofLog() << "Collision alert between " << Aircrafts[i].planeID
+                    << " and " << Aircrafts[j].planeID;
+
+                // Example: Alter the direction of one plane
+                Aircrafts[i].directionAngle += PI / 4; // Adjust course by 45 degrees
+                Aircrafts[j].directionAngle -= PI / 4; // Adjust course by 45 degrees
+            }
+        }
+    }
 }
 
 //--------------------------------------------------------------

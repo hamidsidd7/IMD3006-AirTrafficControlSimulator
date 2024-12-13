@@ -15,7 +15,7 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 		vector<Aircraft> Aircrafts;
-		vector<Aircraft> takeOffAircrafts;
+		//vector<Aircraft> takeOffAircrafts;
 		
 		Runway runway;
 		int runwayPosX;
