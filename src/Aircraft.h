@@ -20,11 +20,20 @@ public:
 	bool deniedLanding;
 	bool deniedTakeOff;
 	bool diverted;
+	bool color;
+
+	float horizontalDistance;
+	float altitudeDifference;
+
+
+	float proximityThreshold;
+	float altitudeThreshold;
 
 	Runway runway;
 	
 	AircraftState state;
 	ofImage aircraftImg;
+	ofImage colAircraftImg;
 	void setup();
 	void takeoff();
 	void land();

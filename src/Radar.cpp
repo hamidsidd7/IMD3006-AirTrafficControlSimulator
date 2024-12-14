@@ -25,6 +25,7 @@ void Radar::Draw()
 	radarImg.resize(ofGetWindowWidth(), ofGetWindowHeight());
 	radarImg.draw(0, 0);
 
+
 }
 
 

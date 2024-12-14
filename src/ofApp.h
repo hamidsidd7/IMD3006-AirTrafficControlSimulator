@@ -14,8 +14,14 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+		
+		float windowWidth;
+		float windowHeight;
+
 		vector<Aircraft> Aircrafts;
 		//vector<Aircraft> takeOffAircrafts;
+
+		ofRectangle  boundaryBox;
 		
 		Runway runway;
 		int runwayPosX;
@@ -25,13 +31,11 @@ class ofApp : public ofBaseApp{
 		Model model;
 
 		ofxImGui::Gui gui;
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mousePressed(int x, int y, int button);
+		void windowResized(int w, int h);
 
 		void addAircraft();
 		void removeAircraft();
 		void handleCollisions();
-		void manageRunways();
+		
 		
 };

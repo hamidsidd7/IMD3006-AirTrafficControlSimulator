@@ -9,6 +9,7 @@ void Aircraft::setup ()
     float initAltitude = 0;
     float initFuel = 0;
     aircraftImg.load("plane.png");
+    colAircraftImg.load("planeCol.png");
     planeID = "Aircraft " + to_string((int)ofRandom(100,999));
     position.set(ofRandom(ofGetWindowWidth() / 2 + 100, ofGetWindowWidth() / 2 - 100),
         ofGetWindowHeight() / 2 - 200);
@@ -22,6 +23,14 @@ void Aircraft::setup ()
     deniedTakeOff = false;
     runway.setup();
     diverted = false;
+    color = false;
+
+    horizontalDistance = 0.0f;
+    altitudeDifference = 0.0f;
+
+
+    proximityThreshold = 80.0f;
+    altitudeThreshold = 500.0f;
 }
 
 
@@ -74,17 +83,20 @@ void Aircraft::updatePosition() {
         break;
     case TAKEOFF:
         speed = 0.03;
-        altitude += ofRandom(10, 50); // Gradually increase altitude
+        altitude += ofRandom(1, 5); // Gradually increase altitude
         break;
     case LANDING:
         speed = 0.03;
-        altitude -= ofRandom(10, 50); // Gradually decrease altitude
+        altitude -= ofRandom(1, 5); // Gradually decrease altitude
         if (altitude <= 0) {
             altitude = 0; // Ensure altitude does not go below zero
         }
         break;
     case TAKENOFF:
         speed = 1.0;
+        break;
+    case COLLISION:
+        speed = 0.01;
         break;
     default:
         break;
@@ -97,14 +109,14 @@ void Aircraft::updatePosition() {
 
 bool Aircraft::checkCollision(const Aircraft& other) 
 {
-    float horizontalDistance = position.distance(other.position);
-    float altitudeDifference = abs(altitude - other.altitude);
+       horizontalDistance = position.distance(other.position);
+       altitudeDifference = abs(altitude - other.altitude);
 
-    
-    float proximityThreshold = 80.0f;
-    float altitudeThreshold = 300.0f;
 
-    return horizontalDistance < proximityThreshold && altitudeDifference < altitudeThreshold;
+       proximityThreshold = 100.0f;
+       altitudeThreshold = 500.0f;
+
+        return horizontalDistance < proximityThreshold && altitudeDifference < altitudeThreshold;
 }
 
 void Aircraft::setPos(int X, int Y)
@@ -125,9 +137,16 @@ void Aircraft::Draw() {
 
 
     ofScale(0.03, 0.03);
-
-
-    aircraftImg.draw(-aircraftImg.getWidth() / 2, -aircraftImg.getHeight() / 2);
+    
+    if (state == COLLISION)
+    {
+        colAircraftImg.draw(-aircraftImg.getWidth() / 2, -aircraftImg.getHeight() / 2);
+    }
+    else
+    {
+        
+        aircraftImg.draw(-aircraftImg.getWidth() / 2, -aircraftImg.getHeight() / 2);
+    }
 
     ofPopMatrix();
 

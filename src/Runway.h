@@ -11,7 +11,11 @@ public:
     string status; // "available", "occupied", "under maintenance"
     ofImage runwayImg;
 
+    ofVec2f runwayPos;
+
     ofRectangle landingZone; 
+    float zoneX;
+    float zoneY;
 
     int  runwaysFree;
     void setup();
