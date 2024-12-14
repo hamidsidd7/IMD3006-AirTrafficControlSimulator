@@ -24,10 +24,10 @@ void ofApp::setup()
     airTrafficSound.setLoop(true);  
     
     emergencySound.load("emergency.mp3");
-    emergencySound.setVolume(0.15f);
+    emergencySound.setVolume(0.2f);
     
     planeSound.load("Plane sound.mp3");
-    planeSound.setVolume(0.04f);
+    planeSound.setVolume(0.08f);
     planeSound.setLoop(true);
     planeSound.play();
 
