@@ -26,21 +26,7 @@ int Runway::getRunwaysFree()
     return runwaysFree;
 }
 
-void Runway::setStatus(const string newStatus)
-{
 
-}
-
-
-
-string Runway::getStatus()
-{
-    return "NULL";
-}
-bool Runway::isAvailable()
-{
-    return true;
-}
 
 void Runway::Draw()
 {

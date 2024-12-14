@@ -1,5 +1,7 @@
+#pragma once
 #include "ofMain.h"
 #include "Aircraft.h"
+
 using namespace::std;
 
 void Aircraft::setup ()
@@ -31,6 +33,9 @@ void Aircraft::setup ()
 
     proximityThreshold = 80.0f;
     altitudeThreshold = 500.0f;
+    divertCountdown = 0;
+    showCountdown = false;
+
 }
 
 
@@ -80,10 +85,12 @@ void Aircraft::updatePosition() {
     switch (state) {
     case FLYING:
         speed = ofRandom(0.2, 0.4); // Random speed while flying
+
         break;
     case TAKEOFF:
         speed = 0.03;
         altitude += ofRandom(1, 5); // Gradually increase altitude
+     
         break;
     case LANDING:
         speed = 0.03;
@@ -91,14 +98,18 @@ void Aircraft::updatePosition() {
         if (altitude <= 0) {
             altitude = 0; // Ensure altitude does not go below zero
         }
+       
         break;
     case TAKENOFF:
         speed = 1.0;
+        
         break;
     case COLLISION:
         speed = 0.01;
+        showCountdown = true;
         break;
     default:
+        showCountdown = false;
         break;
     }
 
@@ -113,8 +124,8 @@ bool Aircraft::checkCollision(const Aircraft& other)
        altitudeDifference = abs(altitude - other.altitude);
 
 
-       proximityThreshold = 100.0f;
-       altitudeThreshold = 500.0f;
+       proximityThreshold = 80.0f;
+       altitudeThreshold = 300.0f;
 
         return horizontalDistance < proximityThreshold && altitudeDifference < altitudeThreshold;
 }
@@ -146,6 +157,13 @@ void Aircraft::Draw() {
     {
         
         aircraftImg.draw(-aircraftImg.getWidth() / 2, -aircraftImg.getHeight() / 2);
+    }
+
+    if (showCountdown)
+    {
+        ofSetColor(255, 0, 0);
+        ofDrawBitmapStringHighlight("Divert in: " + to_string((int)ceil(divertCountdown)) + "s", position.x - 30, position.y - 50, ofColor(255, 0, 0));
+        ofSetColor(255);
     }
 
     ofPopMatrix();

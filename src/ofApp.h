@@ -1,10 +1,9 @@
-
 #include "Aircraft.h"
 #include "Runway.h"
 #include "ofMain.h"
 #include "Radar.h"
-#include "Model.h"
-#include "ofxImGui.h"
+#include "main.h"
+
 
 
 
@@ -19,7 +18,9 @@ class ofApp : public ofBaseApp{
 		float windowHeight;
 
 		vector<Aircraft> Aircrafts;
-		//vector<Aircraft> takeOffAircrafts;
+		
+		ofImage startScreen;
+		ofImage lossScreen;
 
 		ofRectangle  boundaryBox;
 		
@@ -28,14 +29,23 @@ class ofApp : public ofBaseApp{
 		int runwayPosY;
 
 		Radar radar;
-		Model model;
+
+		int planesLanded;
+		int planesTakenOff;
+
+		bool won;
+		
+		bool instructions;
+		bool lost;
 
 		ofxImGui::Gui gui;
 		void windowResized(int w, int h);
 
 		void addAircraft();
-		void removeAircraft();
 		void handleCollisions();
+		void keyPressed(int key);
+		void resetGame();
+		
 		
 		
 };

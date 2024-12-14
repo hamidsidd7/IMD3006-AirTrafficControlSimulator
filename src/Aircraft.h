@@ -2,6 +2,9 @@
 #include "gameObject.h"
 #include "ofMain.h"
 #include "Runway.h"
+#include "main.h"
+
+
 using namespace::std;
 
 
@@ -14,6 +17,9 @@ public:
 	float altitude;
 	float fuelLevel;
 	float directionAngle;
+	float divertCountdown; // Countdown timer in seconds
+	bool showCountdown;    // Whether to show the countdown
+
 	string planeID;
 	
 	bool landing;

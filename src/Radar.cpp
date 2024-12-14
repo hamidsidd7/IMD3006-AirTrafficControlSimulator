@@ -8,18 +8,6 @@ void  Radar::update()
 {
 
 }
-void Radar::addAircraft(Aircraft* aircraft)
-{
-
-}
-void Radar::removeAircraft(int aircraftId)
-{
-
-}
-void Radar::display()
-{
-	ofDrawCircle(ofGetWindowWidth() / 2, ofGetWindowHeight(), 50);
-}
 void Radar::Draw()
 {
 	radarImg.resize(ofGetWindowWidth(), ofGetWindowHeight());
