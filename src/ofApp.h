@@ -22,6 +22,10 @@ class ofApp : public ofBaseApp{
 		ofImage startScreen;
 		ofImage lossScreen;
 
+		ofSoundPlayer airTrafficSound;
+		ofSoundPlayer planeSound;
+		ofSoundPlayer emergencySound;
+
 		ofRectangle  boundaryBox;
 		
 		Runway runway;

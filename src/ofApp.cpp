@@ -18,6 +18,19 @@ void ofApp::setup()
     radar.setup();
     startScreen.load("instructions.jpg");
     lossScreen.load("lost.png");
+    
+    airTrafficSound.load("air-traffic-control.mp3");
+    airTrafficSound.setVolume(0.15f);
+    airTrafficSound.setLoop(true);  
+    
+    emergencySound.load("emergency.mp3");
+    emergencySound.setVolume(0.15f);
+    
+    planeSound.load("Plane sound.mp3");
+    planeSound.setVolume(0.04f);
+    planeSound.setLoop(true);
+    planeSound.play();
+
 
     boundaryBox.set(ofGetWindowWidth()/2.5, ofGetWindowHeight()/3, 220, 250); 
     boundaryBox.scaleFromCenter(2,2);
@@ -72,6 +85,7 @@ void ofApp::update()
 {
     if (!instructions && !lost && !won)
     {
+        
         windowWidth = ofGetWindowWidth();
         windowHeight = ofGetWindowHeight();
 
@@ -159,7 +173,7 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw() {
 
-   
+    
     
     ofBackground(0,120,100);
     
@@ -189,11 +203,13 @@ void ofApp::draw() {
         ImGui::SetNextWindowPos(ofVec2f(60, ofGetWindowHeight() - 500), ImGuiCond_Once);
         ImGui::SetNextWindowSize(ofVec2f(250, 200), ImGuiCond_Once);
         ImGui::Begin("Collision Emergency Handling");
+        
 
         for (int i = 0; i < Aircrafts.size(); ++i)
         {
             for (int j = i + 1; j < Aircrafts.size(); ++j)
             {
+                    
                 if (Aircrafts[i].diverted == false && Aircrafts[j].diverted == false)
                 {
                     if (Aircrafts[i].checkCollision(Aircrafts[j]))
@@ -205,6 +221,7 @@ void ofApp::draw() {
                         {
                             Aircrafts[i].divertCountdown = 5.0; // Set countdown to 5 seconds
                             Aircrafts[i].showCountdown = true; // Start countdown
+                            emergencySound.play();
                         }
                         if (!Aircrafts[j].showCountdown)
                         {
@@ -212,7 +229,6 @@ void ofApp::draw() {
                             Aircrafts[j].showCountdown = true; // Start countdown
                         }
                         
-
                         string planeInfo = Aircrafts[i].planeID + " & " + Aircrafts[j].planeID;
                         ImGui::Text("%s", planeInfo.c_str());
 
@@ -354,14 +370,19 @@ void ofApp::draw() {
     }
     else if (lost)
     {
+        
         lossScreen.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
         ImGui::SetNextWindowPos(ofVec2f(ofGetWindowWidth()/2, ofGetWindowHeight() / 2), ImGuiCond_Once);
         ImGui::Begin("You lost");
+        
+        airTrafficSound.stop();
         
         if (ImGui::Button("Try Again"))
         {
             resetGame();
         }
+
+        
         ImGui::End();
     }
     else if (won)
@@ -371,6 +392,7 @@ void ofApp::draw() {
 
         ImGui::SetNextWindowPos(ofVec2f(ofGetWidth() / 2, ofGetHeight() / 2), ImGuiCond_Once);
         ImGui::Begin("You Win");
+        airTrafficSound.stop();
         if (ImGui::Button("Play Again"))
         {
             resetGame();
@@ -416,6 +438,7 @@ void ofApp::keyPressed(int key)
     if (key == ' ')
     {
         instructions = false;
+        airTrafficSound.play();
     }
 
 }
