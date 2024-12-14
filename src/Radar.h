@@ -5,12 +5,10 @@ class Radar : public gameObject
 {
 public:
 	
-	
+	ofRectangle boundaryBox;
 	ofImage radarImg;
 
 	void setup();
-	void update();
-	void Draw();
 	
 };
 

@@ -15,10 +15,9 @@ public:
 	ofVec2f position;
 	float speed;
 	float altitude;
-	float fuelLevel;
 	float directionAngle;
-	float divertCountdown; // Countdown timer in seconds
-	bool showCountdown;    // Whether to show the countdown
+	float divertCountdown; 
+	bool showCountdown;   
 
 	string planeID;
 	
@@ -46,6 +45,6 @@ public:
 	void setPos(int X, int Y);
 	void updatePosition();
 	bool checkCollision(const Aircraft& other);
-	void Draw();
+	void addAircraft(vector<Aircraft>& Aircrafts);
 };
 

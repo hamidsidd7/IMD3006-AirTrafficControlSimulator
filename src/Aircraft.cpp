@@ -9,7 +9,6 @@ void Aircraft::setup ()
     state = FLYING;
     float initSpeed = 0;
     float initAltitude = 0;
-    float initFuel = 0;
     aircraftImg.load("plane.png");
     colAircraftImg.load("planeCol.png");
     planeID = "Aircraft " + to_string((int)ofRandom(100,999));
@@ -17,8 +16,8 @@ void Aircraft::setup ()
         ofGetWindowHeight() / 2 - 200);
     directionAngle = ofRandom(0, 360) * DEG_TO_RAD;
 
-    altitude = ofRandom(500, 10000); // Random altitude between 500 and 10,000 feet
-    fuelLevel = ofRandom(50, 100);  // Random fuel level
+    altitude = ofRandom(500, 10000); 
+
 
     landing = false;
     deniedLanding = false;
@@ -51,53 +50,51 @@ void Aircraft::land()
 {
     landing = true;
     state = LANDING;
+    runway.runwaysFree++;
     
 }
 
-//void Aircraft::updatePosition() {
-//    switch (state)
-//    {
-//    case FLYING:
-//        speed = ofRandom(0.2, 0.4); // Random speed when flying
-//        break;
-//    case TAKEOFF:
-//        speed = 0.01;
-//        break;
-//    case LANDING:
-//        speed = 0.03;
-//        break;
-//    case TAKENOFF:
-//        speed = 1;
-//        break;
-//    default:
-//        break;
-//    }
-//    position.x += speed * cos(directionAngle);
-//    position.y += speed * sin(directionAngle);
-//        
-//        
-//
-//        float distanceFromCenter = ofDist(position.x, position.y, ofGetWindowWidth()/2, ofGetWindowHeight()/2);
-//
-//}
+void Aircraft::addAircraft(vector<Aircraft>& Aircrafts)
+{
 
-void Aircraft::updatePosition() {
-    switch (state) {
+
+    Aircraft newPlane;
+    newPlane.setup();
+
+
+    int x = ofRandom(runway.landingZone.getX(), runway.landingZone.getX() + runway.landingZone.getWidth());
+    int y = ofRandom(runway.landingZone.getY(), runway.landingZone.getY() + runway.landingZone.getHeight());
+    newPlane.position.set(x, y);
+    newPlane.updatePosition();
+
+    newPlane.state = TAKEOFF;
+
+
+
+    Aircrafts.push_back(newPlane);
+}
+
+void Aircraft::updatePosition() 
+{
+    switch (state) 
+    {
     case FLYING:
-        speed = ofRandom(0.2, 0.4); // Random speed while flying
+        speed = ofRandom(0.2, 0.4); 
 
         break;
     case TAKEOFF:
         speed = 0.03;
-        altitude += ofRandom(1, 5); // Gradually increase altitude
+        altitude += ofRandom(1, 5); 
      
         break;
     case LANDING:
         speed = 0.03;
-        altitude -= ofRandom(1, 5); // Gradually decrease altitude
-        if (altitude <= 0) {
-            altitude = 0; // Ensure altitude does not go below zero
+        altitude -= ofRandom(1, 5);
+        if (altitude <= 0)
+        {
+            altitude = 0; 
         }
+
        
         break;
     case TAKENOFF:
@@ -113,7 +110,6 @@ void Aircraft::updatePosition() {
         break;
     }
 
-    // Update position
     position.x += speed * cos(directionAngle);
     position.y += speed * sin(directionAngle);
 }
@@ -136,37 +132,4 @@ void Aircraft::setPos(int X, int Y)
     position.y = Y;
 }
 
-void Aircraft::Draw() {
 
-    ofPushMatrix();
-
-
-    ofTranslate(position.x, position.y);
-
-
-    ofRotateRad(directionAngle + PI / 2);
-
-
-    ofScale(0.03, 0.03);
-    
-    if (state == COLLISION)
-    {
-        colAircraftImg.draw(-aircraftImg.getWidth() / 2, -aircraftImg.getHeight() / 2);
-    }
-    else
-    {
-        
-        aircraftImg.draw(-aircraftImg.getWidth() / 2, -aircraftImg.getHeight() / 2);
-    }
-
-    if (showCountdown)
-    {
-        ofSetColor(255, 0, 0);
-        ofDrawBitmapStringHighlight("Divert in: " + to_string((int)ceil(divertCountdown)) + "s", position.x - 30, position.y - 50, ofColor(255, 0, 0));
-        ofSetColor(255);
-    }
-
-    ofPopMatrix();
-
-
-}
