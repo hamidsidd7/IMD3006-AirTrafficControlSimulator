@@ -3,7 +3,6 @@
 void ofApp::setup()
 {
     gameController.setup();
-
 }
 
 void ofApp::update()
